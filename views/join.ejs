@@ -16,17 +16,12 @@
                 <h1>Meowtants</h1>
             </div>
         </section>
+        <section class="title">
+            <h1>Join</h1>
+        </section>
+
         <section>
-            <div class="menu">
-                <nav class="menu-links">
-                    <ul>
-                        <li class="menu-item">Sign in</li>
-                        <li class="menu-item">Join</li>
-                        <li class="menu-item">Baby Nursery</li>
-                        <li class="menu-item">Hatch a Meowtant</li>
-                    </ul>
-                </nav>
-            </div>
+            <%-include('menu'); %>
         </section>
     </header>
 
@@ -35,10 +30,6 @@
         <div class="login-join-form">
             <img id="img-login" src="img/250.shadow.png" alt="">
             <form action="/join" method="POST">
-                <div class="card-content-area">
-                    <h2>Join</h2>
-                </div>
-
                 <div class="card-content-area">
                     <label for="email">E-mail</label>
                     <input type="email" name="email" id="email" >

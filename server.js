@@ -1,6 +1,13 @@
 const express = require('express')
 const app = express()
 
+const session = require('express-session')
+app.use(session({
+    secret: '2C44-4D44-WppQ38S',
+    resave: false,
+    saveUninitialized: true
+}));
+
 const fs = require('fs')
 const formidable = require('formidable')
 const crypto = require('crypto')
@@ -32,8 +39,40 @@ conn.connect(function(err) {
     console.log("Connected to database")
 });
 
+app.get('/logout', function (req, res) {
+    req.session.destroy(function (err) {
+        //nada(?)
+    })
+    res.redirect('/')
+})
+
 app.get('/', function (req, res){
     res.render('index.ejs')
+})
+
+app.post('/', function (req, res) {
+    var email = req.body['email']
+    var pass = req.body['pass']
+
+    var sql = "select * from users where email = ?"
+    conn.query(sql, [email], function (err, result) {
+        if (err) throw err
+
+        if(result.length) {
+            bcrypt.compare(pass, result[0]['pass'], function (err, results) {
+                if (err) throw err
+
+                if(results) {
+                    req.session.logged = true
+                    req.session.email = result[0]['email']
+                    res.redirect('/nursery')
+                }
+                else {
+                    res.render('index.ejs', {mesage: "E-mail not found"})
+                }
+            })
+        }
+    })
 })
 
 app.get('/join', function (req, res) {
@@ -63,7 +102,13 @@ app.get('/nursery', function (req, res) {
 })
 
 app.get('/hatch', function (req, res){
-    res.render('create_meowtant.ejs')
+    if(req.session.logged) {
+        res.render('create_meowtant.ejs')
+    } else {
+        req.session.message = "You must sign up"
+        res.redirect('/')
+    }
+        
 })
 
 app.post('/hatch', function (req, res){
@@ -90,13 +135,18 @@ app.post('/hatch', function (req, res){
 
 
 app.get('/change/:id', function (req, res){
-    var sql = "select * from meowtants where id = ?"
-    var id = req.params.id
+    if(req.session.logged) {
+        var sql = "select * from meowtants where id = ?"
+        var id = req.params.id
 
-    conn.query(sql, id, function (err, result, fields) {
-        if (err) throw err
-        res.render('change_register.ejs', {data_record: result})
-    })    
+        conn.query(sql, id, function (err, result, fields) {
+            if (err) throw err
+            res.render('change_register.ejs', {data_record: result})
+        })    
+    } else {
+        req.session.message = "You must sign up"
+        res.redirect('/')
+    }
 })
 
 app.post('/change/:id', function (req, res){ 
@@ -126,21 +176,27 @@ app.post('/change/:id', function (req, res){
 
 
 app.get('/delete/:id', function (req, res) {
-    var id = req.params.id
-    var sql = "select * from meowtants where id = ?"
-    
-    conn.query(sql, id, function (err, result, fields) {
-        if (err) throw err
-        const img = path.join(__dirname, 'public/images/', result[0]['picture'])
-        fs.unlink(img, (err) => {
+    if(req.session.logged) {
+        var id = req.params.id
+        var sql = "select * from meowtants where id = ?"
+        
+        conn.query(sql, id, function (err, result, fields) {
+            if (err) throw err
+            const img = path.join(__dirname, 'public/images/', result[0]['picture'])
+            fs.unlink(img, (err) => {
+            })
         })
-    })
-    var sql = "delete from meowtants where id = ?"
-    conn.query(sql, id, function (err, result) {
-        if (err) throw err
-        console.log("Deleted registers: " + result.affectedRows)
-    })
-    res.redirect('/nursery')
+        var sql = "delete from meowtants where id = ?"
+        conn.query(sql, id, function (err, result) {
+            if (err) throw err
+            console.log("Deleted registers: " + result.affectedRows)
+        })
+        res.redirect('/nursery')
+    } else {
+        req.session.message = "You must sign up"
+        res.redirect('/')
+    }
+
 })
 
 app.listen(3000)
