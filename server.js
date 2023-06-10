@@ -118,7 +118,7 @@ app.post('/change/:id', function (req, res){
         var values = [ [fields['cat-name']], [fields['birth']], [fields['genes']], [pic_name], [id] ]
         conn.query(sql, values, function (err, result){
             if (err) throw err
-            console.log('Registers inserted: ' + result.affectedRows)
+            console.log('Registers updated: ' + result.affectedRows)
         })
     })
     res.redirect('/nursery')

@@ -1,1 +1,4 @@
 create table users (id integer not null auto_increment, email varchar(100), pass varchar(100), primary key (id));
+
+
+create table meowtants(id integer not null auto_increment, birth date, genes varchar(30), picture varchar(300), primary key (id)); 

@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Change Register</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
     <header>
@@ -36,7 +36,7 @@
         <div class="login-join-form">
             <% data_record.forEach(function(data) { %>
 
-            <img id="img-login" src="images/<%= data.picture %>" alt="Baby's photo">
+            <img id="img-login" src="../images/<%= data.picture %>" alt="Baby's photo">
             <form action="/change/<%= data.id %>" method="POST" enctype="multipart/form-data">
 
                 <div class="card-content-area">
@@ -55,7 +55,7 @@
                 </div>
 
                 <div class="card-content-area">
-                    <label for="pdf">Picture</label>
+                    <label for="pic">Picture</label>
                     <input type="file" name="pic" id="pic">
                 </div>
 
