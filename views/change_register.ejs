@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hatch a Meowtant</title>
+    <title>Change Register</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -14,6 +14,9 @@
                 <img src="img/CryptoKitties.png" alt="">
                 <h1>Meowtants</h1>
             </div>
+        </section>
+        <section class="title">
+            <h1>Change Register</h1>
         </section>
         <section>
             <div class="menu">
@@ -31,25 +34,24 @@
 
     <main>
         <div class="login-join-form">
-            <img id="img-login" src="img/16.png" alt="">
-            <form action="/hatch" method="POST" enctype="multipart/form-data">
-                <div class="card-content-area">
-                    <h2>Hatch a Meowtant</h2>
-                </div>
+            <% data_record.forEach(function(data) { %>
+
+            <img id="img-login" src="images/<%= data.picture %>" alt="Baby's photo">
+            <form action="/change/<%= data.id %>" method="POST" enctype="multipart/form-data">
 
                 <div class="card-content-area">
                     <label for="name">Name</label>
-                    <input type="text" name="cat-name" id="cat-name" >
+                    <input type="text" name="cat-name" id="cat-name" value="<%= data.name %>" >
                 </div>
 
                 <div class="card-content-area">
                     <label for="date">Birth</label>
-                    <input type="date" name="birth" id="birth">
+                    <input type="date" name="birth" id="birth" value="<%= data.birth %>">
                 </div>
 
                 <div class="card-content-area">
                     <label for="genes">Genes</label>
-                    <input type="text" name="genes" id="genes">
+                    <input type="text" name="genes" id="genes" value="<%= data.genes %> ">
                 </div>
 
                 <div class="card-content-area">
@@ -58,12 +60,13 @@
                 </div>
 
                 <div class="card-content-area">
-                    <input type="submit" class="submit-button" name="criar" id="criar" value="Hatch">
+                    <input type="submit" class="submit-button" name="change" id="change" value="Change">
                 </div>
             </form>
+            <% }) %>
         </div>
+   
     </main>
-
 
     <footer>
 

@@ -17,7 +17,11 @@ header {
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-content: space-around;
+}
 
+.title {
+    font-size: 30px;
 }
 
 .img-cabecalho {
@@ -54,6 +58,13 @@ main {
 
 }
 
+#cards {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
 .login-join-form {
     display: flex;
     flex-direction: row-reverse;
@@ -86,10 +97,11 @@ input[type=button], input[type=submit] {
     padding: 10px;
     margin: 20px;
     border: 3px solid #ffa039;
-    height: 310px;
-    width: 200px;
+    height: 400px;
+    width: 300px;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: center;
 }
@@ -104,6 +116,5 @@ a {
     border-radius: 5px;
     text-align: center;
     width: auto;
-
 }
 
