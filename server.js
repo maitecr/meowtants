@@ -27,8 +27,12 @@ app.use(express.urlencoded({ extended: true }))
 
 conn.connect(function(err) { 
 	if(err) throw err
+    const create_database = "create database if not exists meowtants"
     const create_table_users = "create table if not exists users (id integer not null auto_increment, email varchar(100), pass varchar(100), primary key (id))"
     const create_table_meowtants = "create table if not exists meowtants(id integer not null auto_increment, name varchar(30), birth date, genes varchar(30), picture varchar(300), primary key (id))"
+
+    conn.query(create_database)
+    console.log("Database created")
     
     conn.query(create_table_users)
     console.log("Users table created")
@@ -41,7 +45,6 @@ conn.connect(function(err) {
 
 app.get('/logout', function (req, res) {
     req.session.destroy(function (err) {
-        //nada(?)
     })
     res.redirect('/')
 })
@@ -68,7 +71,7 @@ app.post('/', function (req, res) {
                     res.redirect('/nursery')
                 }
                 else {
-                    res.render('index.ejs', {mesage: "E-mail not found"})
+                    res.render('index.ejs', {message: "Invalid e-mail or password"})
                 }
             })
         }
@@ -80,15 +83,19 @@ app.get('/join', function (req, res) {
 })
 
 app.post('/join', function (req, res) {
-    bcrypt.hash(req.body['pass'], salts, function (err, hash) {
-        var sql = "insert into users (email, pass) values ?"
-        var values = [[req.body['email'], hash]]
-        console.log(values)
-        conn.query(sql, [values], function(err, result){
-            if (err) throw err
-            console.log("Registers inserted: " + result.affectedRows)
+    var email = req.body['email']
+    var check_email = "select email from users where email = ?"
+    console.log(email) 
+
+        bcrypt.hash(req.body['pass'], salts, function (err, hash) {
+            var sql = "insert into users (email, pass) values ?"
+            var values = [[req.body['email'], hash]]
+            console.log(values)
+            conn.query(sql, [values], function(err, result){
+                if (err) throw err
+                console.log("Registers inserted: " + result.affectedRows)
+            })
         })
-    })
     res.redirect('/')
 })
 
