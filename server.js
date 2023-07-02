@@ -50,7 +50,9 @@ app.get('/logout', function (req, res) {
 })
 
 app.get('/', function (req, res){
-    res.render('index.ejs')
+    message = req.session.message
+    req.session.message = null
+    res.render('index.ejs', {message : message})
 })
 
 app.post('/', function (req, res) {
@@ -69,11 +71,12 @@ app.post('/', function (req, res) {
                     req.session.logged = true
                     req.session.email = result[0]['email']
                     res.redirect('/nursery')
-                }
-                else {
+                } else {
                     res.render('index.ejs', {message: "Invalid e-mail or password"})
                 }
             })
+        } else {
+            res.render('index.ejs', {message: "Invalid e-mail or password"})
         }
     })
 })
@@ -112,7 +115,7 @@ app.get('/hatch', function (req, res){
     if(req.session.logged) {
         res.render('create_meowtant.ejs')
     } else {
-        req.session.message = "You must sign up"
+        req.session.message = "You must sign in"
         res.redirect('/')
     }
         
