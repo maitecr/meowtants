@@ -8,14 +8,24 @@ Meowtants is an academic project inspired by the popular platform "CryptoKitties
 Technologies Used:
 
 Templating Engine: ejs
+
 Backend Framework: Node.js with Express
+
 Cryptographic Operations: crypto
+
 User Authentication: bcrypt
+
 Form Handling: formidable
+
 Session Management: sessions
+
 Database: MySQL
+
 File System Operations: fs
+
 Development Start Script: devStart
+
+
 Features:
 
 Create: Users can create unique Meowtants by selecting and customizing CryptoKitties images. The created Meowtants will be stored in the MySQL database.
